@@ -16,11 +16,13 @@ export default function App() {
 
 const getCredentials = async () => {
   // credentials.json is a simple JSON file in the format of
-  //
-  //
-  //
+  // {
+  //   "clientId": "CLIENT_ID_HERE",
+  //   "clientSecret": "CLIENT_SECRET_HERE"
+  // }
   //
   // * It was omitted for privacy reasons
+
   const {
     clientId,
     clientSecret
@@ -30,7 +32,7 @@ const getCredentials = async () => {
 
 const getToken = async () => {
   try {
-    const credentials = await getCredentials() //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
+    const credentials = await getCredentials()
     const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
