@@ -8,10 +8,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "base-64": "^0.1.0",
+    "cors": "^2.8.5",
     "expo": "~38.0.1",
+    "expo-auth-session": "~1.4.0",
     "expo-splash-screen": "~0.4.0",
     "expo-status-bar": "^1.0.0",
     "expo-updates": "~0.2.10",
+    "express": "^4.17.1",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "~0.62.2",
