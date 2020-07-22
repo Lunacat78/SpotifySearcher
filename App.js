@@ -1,19 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
 import { encode as btoa } from 'base-64';
 import credentials from './credentials.json';
 
 export default class App extends Component {
   state = {
     inputValue: '',
+    data:[
+    ],
   };
 
   _handleTextChange = inputValue => {
-    this.setState({ inputValue });
     this.getArtistList(inputValue);
+    this.setState({ inputValue });
   };
-
   
   render() {
     return (
@@ -22,6 +22,12 @@ export default class App extends Component {
           value={this.state.inputValue}
           onChangeText={this._handleTextChange}
           style={{ width: 200, height: 44, padding: 8, borderWidth: 1, borderColor: '#ccc' }}
+        />
+        <FlatList
+          data={this.state.data}
+          renderItem={({ item }) => <Item item={item}/>}
+          keyExtractor={item => item.item}
+          extraData={this.state}
         />
       </View>
     );
@@ -80,7 +86,11 @@ export default class App extends Component {
         }
       }).then(response => response.json())
       .then(response => {
-          console.log(response)
+        this.state.data = [];
+        for (var i = 0; i < 20; i++) {
+          console.log(response.artists.items[i].name);
+          this.state.data.push({name: response.artists.items[i].name, image: response.artists.items[i].images[0].url, followers: response.artists.items[i].popularity});
+        }
       }).catch((error) => {
         console.log(error);
       });
@@ -91,12 +101,29 @@ export default class App extends Component {
 }
 
 
+function Item({ item }) {
+  return (
+    <View style={styles.listItem}>
+      <Image source={{uri:item.image}}  style={{width:60, height:60,borderRadius:30}} />
+      <Text style={styles.title}>{item.name}</Text>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#F7F7F7',
+    marginTop:60
   },
+  listItem:{
+    margin:10,
+    padding:10,
+    backgroundColor:"#FFF",
+    width:"80%",
+    flex:1,
+    alignSelf:"center",
+    flexDirection:"row",
+    borderRadius:5
+  }
 });
